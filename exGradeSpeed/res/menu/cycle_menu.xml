@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+      android:title="View specifics for: " >
+
+    <item
+        android:id="@+id/cycle1"
+        android:orderInCategory="5"
+        android:title="1st Quarter"/>
+    
+    <item
+        android:id="@+id/cycle2"
+        android:orderInCategory="7"
+        android:title="2nd Quarter"/>
+    
+    <item
+        android:id="@+id/cycle3"
+        android:orderInCategory="10"
+        android:title="3rd Quarter"/>
+    
+    <item
+        android:id="@+id/cycle4"
+        android:orderInCategory="12"
+        android:title="4th Quarter"/>
+
+</menu>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">!GradeSpeed</string>
+    <string name="action_settings">Switch School Districs</string>
+    <string name="action_about">About</string>
+    <string name="logoDesc">!inc GradeSpeed Logo</string>
+    <string name="loginBtn">Log in to GradeSpeed</string>
+    <string name="user">Username</string>
+    <string name="pass">Password</string>
+    <string name="rememberQ">Remember</string>
+    <string name="derangement">!inc</string>
+    <string name="settings">GradeSpeed Settings</string>
+    <string name="title_activity_grade_sheet">GradeSheet</string>
+    <string name="gradeHeader">Grades</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_specifics">Specifics</string>
+    <string name="switchstudent">Switch Student</string>
+
+</resources>

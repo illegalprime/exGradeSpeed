@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings" 
+        android:visible="true" 
+        android:enabled="true" />
+    
+    <item 
+        android:id="@+id/action_about" 
+        android:orderInCategory="101" 
+        android:title="@string/action_about" 
+        android:visible="true" 
+        android:enabled="true" />
+    
+    <item 
+        android:id="@+id/action_switchstudents" 
+        android:orderInCategory="102" 
+        android:enabled="true" 
+        android:visible="true" 
+        android:title="@string/switchstudent" />
+
+</menu>
