@@ -1,5 +1,6 @@
 package com.derangementinc.gradespeedmobile;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SettingsManager {
 	private static Context context;
 	
 	private static List<String[]> Brothers = new LinkedList<String[]>();
-	public static String defaultBrother = "";
+	private static String defaultBrother = "";
 	public static String brothersFormValues = "";
 	private static final int    BROTHER_NAME = 0;
 	private static final int    BROTHER_ID   = 1;
@@ -29,11 +30,17 @@ public class SettingsManager {
 	private static final String rowBreak  = "&&";
 	public  static final String combro    = "_ctl0_ddlStudents";
 	
+	private static List<String> pastGrades = new ArrayList<String>();
+	
 	public SettingsManager() {}
 	
 	public static void setCredentials(String user, String pass) {
 		savedPass = pass;
 		savedUser = user;
+		
+		if (!savedPass.equals(pass) || !savedUser.equals(user)) {
+			clearPastGrades();
+		}
 	}
 	
 	public static void setContext(Context cntxt) {
@@ -95,6 +102,14 @@ public class SettingsManager {
 				}
 				defaultBrother = prefs.getString("defaultBrother", "");
 				brothersFormValues = prefs.getString("brothersFormValues", "");
+			}
+		}// ACECBEBB
+		
+		//Past Grades
+		String concatGrades = prefs.getString("pastGrades", "");
+		if (!concatGrades.equals("")) {
+			for (String data : concatGrades.split(dataBreak)) {
+				pastGrades.add(data);
 			}
 		}
 	}
@@ -221,11 +236,109 @@ public class SettingsManager {
 		prefsEdit.putString("defaultBrother", defaultBrother);
 		prefsEdit.commit();
 	}
+	
+	public static void setDefaultBrother(String id) {
+		defaultBrother = id;
+		
+		if (!defaultBrother.equals(id)) {
+			clearPastGrades();
+		}
+	}
+	
+	public static String getDefaultBrother() {
+		return defaultBrother;
+	}
 
-	public static void loadPhonies() {
-		String[] student = {"Michael Eden", "190035708"};
-		Brothers.add(student.clone());
-		student[0] = "Ittai Eden";
-		Brothers.add(student.clone());
+	//public static void loadPhonies() {
+	//	String[] student = {"Michael Eden", "190035708"};
+	//	Brothers.add(student.clone());
+	//	student[0] = "Ittai Eden";
+	//	Brothers.add(student.clone());
+	//}
+	
+	//----------------------//
+	//   Past grades time!  //
+	//----------------------//
+	public static void buildGradeTable() {
+		SettingsManager.clearPastGrades();
+		
+		for (String[] grade : ConnectionManager.ShortGrades) {
+			pastGrades.add(grade[ConnectionManager.CURRENT_GRADE]);
+		}
+		
+		if (!pastGrades.isEmpty()) {
+			SharedPreferences.Editor prefsEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+			String concatGrades = "";
+			for (String grade : pastGrades) {
+				concatGrades += grade + dataBreak;
+			}
+			prefsEdit.putString("pastGrades", concatGrades.substring(0, concatGrades.length() - dataBreak.length()));
+			prefsEdit.commit();
+		}
+	}
+	
+	public static void clearPastGrades() {
+		if (!pastGrades.isEmpty()) {
+			pastGrades.clear();
+			SharedPreferences.Editor prefsEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+			prefsEdit.putString("pastGrades", "");
+			prefsEdit.commit();
+		}
+	}
+	
+	public static void updateGrade(String grade, int index) {
+		if (index < pastGrades.size()) {
+			pastGrades.set(index, grade);
+		}
+		else {
+			for (int len = pastGrades.size(); len < index; len++) {
+				pastGrades.add("ok");
+			}
+			
+			pastGrades.add(grade);
+		}
+	}
+	
+	public static String isNewGrade(String grade, int index) {
+		String pastGrade = pastGrades.get(index);
+		
+		if (index < pastGrades.size()) {
+			if (!pastGrade.equals(grade)) {
+				int change = 0;
+				
+				try {
+					change = Integer.parseInt(grade) - Integer.parseInt(pastGrade); 
+				} catch (NumberFormatException error) {
+					return "NEW";
+				}
+				
+				if (change > 0) {
+					return "+" + change;
+				}
+				else {
+					return "" + change;
+				}
+			}
+			else {
+				return "";
+			}
+		}
+		else {
+			return "NEW";
+		}
+	}
+	
+	public static boolean oldGradesEmpty() {
+		return pastGrades.isEmpty();
+	}
+	
+	public static void loadPhonyPastGrades() {
+		pastGrades.add("90");
+		pastGrades.add("");
+		pastGrades.add("90");
+		pastGrades.add("90");
+		pastGrades.add("90");
+		pastGrades.add("90");
+		pastGrades.add("90");
 	}
 }

@@ -1,5 +1,5 @@
 <resources>
-	<style name="myTheme" parent="android:Theme.Holo.NoActionBar">
-        <!-- Main Theme -->
+	<style name="myTheme" parent="android:Theme.Holo">
+        <!-- Main Theme .NoActionBar -->
 	</style>
 </resources>

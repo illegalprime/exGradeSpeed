@@ -109,12 +109,11 @@
         android:id="@+id/flagNEW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/gradeNo"
-        android:layout_alignParentTop="true"
-        android:text="NEW"
+        android:layout_alignTop="@+id/teacherTitle"
+        android:layout_toLeftOf="@+id/imageView1"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:visibility="invisible" />
+        android:textColor="#FF0000"
+        android:textSize="14sp" />
 
 </RelativeLayout>

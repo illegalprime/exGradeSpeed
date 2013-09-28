@@ -21,18 +21,25 @@ import android.app.Activity;
 import android.content.Intent;
 
 public class GradeSheet extends Activity implements OnItemClickListener {
+	private ListView gradeList = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_grade_sheet);
 		
-		ListView gradeList = (ListView) this.findViewById(R.id.GradesList);
+		gradeList = (ListView) this.findViewById(R.id.GradesList);
 		SummaryAdapter adapter = new SummaryAdapter(this);
 		
 		gradeList.setAdapter(adapter);
 		gradeList.setOnItemClickListener(this);
 		this.registerForContextMenu(gradeList);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		gradeList.setAdapter(new SummaryAdapter(this));
 	}
 	
 	@Override
@@ -83,6 +90,9 @@ public class GradeSheet extends Activity implements OnItemClickListener {
 	private void startSpecificsActivity(int course, int cycleURLindex) {
 		Intent intent = new Intent(getBaseContext(), Specifics.class);
 		String[] grades = ConnectionManager.ShortGrades.get(course);
+		
+		SettingsManager.updateGrade(grades[ConnectionManager.CURRENT_GRADE], course);
+		
 		intent.putExtra("url", grades[cycleURLindex]);
 		intent.putExtra("description", grades[ConnectionManager.COURSE_NAME] + " (Period " + grades[ConnectionManager.COURSE_PERIOD].substring(0, 1) + "): " + grades[ConnectionManager.TEACHER_NAME] );		
 		startActivity(intent);

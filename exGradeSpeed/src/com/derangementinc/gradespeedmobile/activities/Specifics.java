@@ -26,7 +26,8 @@ public class Specifics extends Activity {
 		String description = getIntent().getStringExtra("description");
 		((TextView) this.findViewById(R.id.courseDescription)).setText(description);
 		
-		new getSpecifics().execute(url);
+		if (!url.equals(""))
+			new getSpecifics().execute(url);
 	}
 	
 	private class getSpecifics extends AsyncTask<String, Void, Boolean> {

@@ -44,7 +44,7 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 	public static final int SWITCH_BROS = 2;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {  SettingsManager.loadPhonyPastGrades();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_log_in);
 		Info = new InfoDialog();
@@ -73,6 +73,10 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 			userView.setText(SettingsManager.getSavedUsername());
 			passView.setText(SettingsManager.getSavedPassword());
 			rememBox.setChecked(true);
+			
+			if (extraMetaformation == 0) {
+				new retreiveGrades().execute(SettingsManager.getSavedUsername(), SettingsManager.getSavedPassword());
+			}
 		}
 		else if (extraMetaformation != SWITCH_BROS) {
 			SettingsManager.clearBrothers();
@@ -129,7 +133,7 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 				showInfoDialog("Login first to retreive data about your siblings.");
 			}
 			else {
-				SettingsManager.defaultBrother = "";
+				SettingsManager.setDefaultBrother("");
 				new retreiveGrades().execute(SettingsManager.getSavedUsername(), SettingsManager.getSavedPassword());
 			}
 		default:
@@ -166,6 +170,10 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 	}
 	
 	public void initiateGradesIntent() {
+		if (SettingsManager.oldGradesEmpty()) {
+			SettingsManager.buildGradeTable();
+		}
+		
 		Intent gradeSheet = new Intent(getBaseContext(), GradeSheet.class);
 		startActivity(gradeSheet);
 	}
@@ -245,7 +253,7 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 		@Override
 		protected Integer doInBackground(Integer... args) {
 			for (Integer brindex : args) {
-				SettingsManager.defaultBrother = SettingsManager.findDatBro(brindex);
+				SettingsManager.setDefaultBrother(SettingsManager.findDatBro(brindex));
 				if (extraMetaformation == SWITCH_BROS) {
 					SettingsManager.writeDefaultBrother();
 				}
@@ -253,7 +261,7 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 					SettingsManager.writeBroData();
 				}
 				
-				if (!SettingsManager.defaultBrother.equals("")) {
+				if (!SettingsManager.getDefaultBrother().equals("")) {
 					return ConnectionManager.getGradesWithBro();
 				}
 				else {
@@ -274,7 +282,12 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 				initiateGradesIntent();
 				break;
 			case 1:
-				showInfoDialog("Could not connect to gradespeed.\nNo WiFi Connection?");
+				if (ConnectionManager.error.equals("")) {
+					showInfoDialog("Could not connect to gradespeed.\nNo WiFi Connection?");
+				}
+				else {
+					showInfoDialog("Congratulations! You have found an error that the developer can't recreate and has been plaguing users for a very long time, send this to my email themichaeleden@gmail.com, or show it to me: '" + ConnectionManager.error + "'");
+				}
 				break;
 			case 2:
 				Toast.makeText(LogIn.this, "24601!", Toast.LENGTH_LONG).show();

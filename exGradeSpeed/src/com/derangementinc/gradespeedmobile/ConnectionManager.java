@@ -47,6 +47,8 @@ public class ConnectionManager {
 	public LinkedList<String[][]> LongGrades = new LinkedList<String[][]>();
 	public LinkedList<String>  LongGradesHeaders = new LinkedList<String>();
 	
+	public static String error = "";
+	
 	public ConnectionManager() {}
 	/*
 	public static String debug(String user, String pass) {
@@ -93,14 +95,15 @@ public class ConnectionManager {
 			return 3;
 		}
 		else {
-			if (SettingsManager.defaultBrother.equals("")) {
+			if (SettingsManager.getDefaultBrother().equals("")) {
 				Document gradesPage = getWebPage(gradesURL, false, true);
 				if (findBros(gradesPage)) {
 					getBroFormValues(gradesPage);
 					return 5;
 				}
 				else {
-					parseForShortGrades(gradesPage);
+					if (!parseForShortGrades(gradesPage))
+						return 1;
 				}
 			}
 			else {
@@ -263,12 +266,16 @@ public class ConnectionManager {
 			logInPage = new URL(url);
 			connection = (HttpURLConnection) logInPage.openConnection();
 			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Cache-Control", "no-cache");
 			connection.setRequestProperty("Content-Language", language);
-			//connection.setRequestProperty("User-Agent", SettingsManager.getUserAgent());
+			connection.setRequestProperty("User-Agent", SettingsManager.getUserAgent());
+			connection.setRequestProperty("Accept", "text/html");
+			connection.setRequestProperty("Accept-Encoding", ""); //: gzip,deflate,sdch\r\n
 			connection.setUseCaches(false);
 			connection.setDoInput(true);
 			//connection.setDoOutput(true);
 			connection.setRequestProperty("Cookie", Cookies);
+			connection.setInstanceFollowRedirects(false);
 			
 			//Log.i("gradespeed", "Created new connection and request." + connection.getRequestProperties().toString());
 			
@@ -278,7 +285,7 @@ public class ConnectionManager {
 				if (!Parse)
 					return response;
 			}
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
+			if ((connection.getResponseCode() != HttpURLConnection.HTTP_OK) || (!logInPage.getHost().equals(connection.getURL().getHost()))) 
 				return (Document) null;
 			
 			response = Jsoup.parse(connection.getInputStream(), null, url);
@@ -294,13 +301,19 @@ public class ConnectionManager {
 		return response;
 	}
 	
-	private static void parseForShortGrades(Document gradesPage) {
+	private static boolean parseForShortGrades(Document gradesPage) {
 		ShortGrades.clear();
-		Iterator<Element> itGT = gradesPage
-				.select("table[class=DataTable]")
-				.first()
-				.getElementsByTag("tr")
-				.iterator();
+		Element gradesTable = gradesPage.select("table[class=DataTable]").first();
+		Iterator<Element> itGT;
+		
+		if (gradesTable != null) {
+			itGT = gradesTable.getElementsByTag("tr").iterator();
+		}
+		else {
+			error = gradesPage.html();
+			return false;
+		}
+		
 		itGT.next(); // First row is headers skip it.
 		CURRENT_GRADE = ConnectionManager.CYCLE_1_GRADE;
 
@@ -354,6 +367,8 @@ public class ConnectionManager {
 
 			ShortGrades.add(tempVals);
 		}
+		
+		return true;
 	}
 	
 	private static String buildUrlArgs(Map<String, String> args) {
@@ -396,7 +411,12 @@ public class ConnectionManager {
 		if (courseGrades == (Document) null)
 			return false;
 		
-		Iterator<Element> tables = courseGrades.getElementsByClass("DataTable").iterator();
+		Elements maybeTables = courseGrades.getElementsByClass("DataTable");
+		if (maybeTables.size() < 2) {
+			return false;
+		}
+		
+		Iterator<Element> tables = maybeTables.iterator();
 		tables.next(); // first element is grades.
 		while (tables.hasNext()) {
 			LongGrades.add(buildTable(tables.next()));
@@ -426,11 +446,13 @@ public class ConnectionManager {
 	}
 	
 	public static int getGradesWithBro() {
-		String gradesURLagain = sendSwitchBroRequest(SettingsManager.defaultBrother);
+		String gradesURLagain = sendSwitchBroRequest(SettingsManager.getDefaultBrother());
 		
 		if (gradesURLagain != "") {
-			parseForShortGrades(getWebPage(gradesURLagain, false, true));
-			return 0;
+			if (parseForShortGrades(getWebPage(gradesURLagain, false, true)))
+				return 0;
+			else
+				return 1;
 		}
 		return 1;
 	}
