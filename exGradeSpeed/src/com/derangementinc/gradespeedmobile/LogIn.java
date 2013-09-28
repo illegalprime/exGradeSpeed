@@ -44,7 +44,7 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 	public static final int SWITCH_BROS = 2;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {  SettingsManager.loadPhonyPastGrades();
+	protected void onCreate(Bundle savedInstanceState) {  //SettingsManager.loadPhonyPastGrades();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_log_in);
 		Info = new InfoDialog();
@@ -170,7 +170,7 @@ public class LogIn extends FragmentActivity implements OnClickListener, OnChecke
 	}
 	
 	public void initiateGradesIntent() {
-		if (SettingsManager.oldGradesEmpty()) {
+		if (SettingsManager.oldGradesEmpty() || SettingsManager.getGradesLength() != ConnectionManager.ShortGrades.size()) {
 			SettingsManager.buildGradeTable();
 		}
 		

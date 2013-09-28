@@ -37,10 +37,6 @@ public class SettingsManager {
 	public static void setCredentials(String user, String pass) {
 		savedPass = pass;
 		savedUser = user;
-		
-		if (!savedPass.equals(pass) || !savedUser.equals(user)) {
-			clearPastGrades();
-		}
 	}
 	
 	public static void setContext(Context cntxt) {
@@ -103,14 +99,12 @@ public class SettingsManager {
 				defaultBrother = prefs.getString("defaultBrother", "");
 				brothersFormValues = prefs.getString("brothersFormValues", "");
 			}
-		}// ACECBEBB
+		}
 		
 		//Past Grades
-		String concatGrades = prefs.getString("pastGrades", "");
-		if (!concatGrades.equals("")) {
-			for (String data : concatGrades.split(dataBreak)) {
-				pastGrades.add(data);
-			}
+		String gradei;
+		for (int i = 0; !(gradei = prefs.getString("pastGrades" + i, "")).equals(""); i++) {
+			pastGrades.add(gradei);
 		}
 	}
 	
@@ -168,6 +162,7 @@ public class SettingsManager {
 			SharedPreferences.Editor prefsEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
 			prefsEdit.putBoolean("isCredentialsRemembered", false);
 			prefsEdit.commit();
+			clearPastGrades();
 		}
 	}
 	//------------------//
@@ -263,47 +258,58 @@ public class SettingsManager {
 		SettingsManager.clearPastGrades();
 		
 		for (String[] grade : ConnectionManager.ShortGrades) {
-			pastGrades.add(grade[ConnectionManager.CURRENT_GRADE]);
+			if (grade.equals("")) {
+				pastGrades.add("CS");
+			}
+			else {
+				pastGrades.add(grade[ConnectionManager.CURRENT_GRADE]);
+			}
 		}
 		
-		if (!pastGrades.isEmpty()) {
-			SharedPreferences.Editor prefsEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
-			String concatGrades = "";
-			for (String grade : pastGrades) {
-				concatGrades += grade + dataBreak;
-			}
-			prefsEdit.putString("pastGrades", concatGrades.substring(0, concatGrades.length() - dataBreak.length()));
-			prefsEdit.commit();
+		SharedPreferences.Editor prefsEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		
+		for (int i = 0; i < pastGrades.size(); ++i) { 
+			prefsEdit.putString("pastGrades" + i, pastGrades.get(i));
 		}
+	
+		prefsEdit.commit();
 	}
 	
 	public static void clearPastGrades() {
 		if (!pastGrades.isEmpty()) {
 			pastGrades.clear();
 			SharedPreferences.Editor prefsEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
-			prefsEdit.putString("pastGrades", "");
+			prefsEdit.putString("pastGrades0", "");
 			prefsEdit.commit();
 		}
 	}
 	
 	public static void updateGrade(String grade, int index) {
+		if (grade.equals("")) {
+			grade = "CS";
+		}
+		
 		if (index < pastGrades.size()) {
 			pastGrades.set(index, grade);
 		}
 		else {
 			for (int len = pastGrades.size(); len < index; len++) {
-				pastGrades.add("ok");
+				pastGrades.add("CS");
 			}
 			
 			pastGrades.add(grade);
 		}
+		
+		SharedPreferences.Editor prefsEdit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		prefsEdit.putString("pastGrades" + index, grade);
+		prefsEdit.commit();
 	}
 	
 	public static String isNewGrade(String grade, int index) {
 		String pastGrade = pastGrades.get(index);
 		
 		if (index < pastGrades.size()) {
-			if (!pastGrade.equals(grade)) {
+			if (!pastGrade.equals(grade) && !grade.equals("")) {
 				int change = 0;
 				
 				try {
@@ -316,7 +322,7 @@ public class SettingsManager {
 					return "+" + change;
 				}
 				else {
-					return "" + change;
+					return  "" + change;
 				}
 			}
 			else {
@@ -330,6 +336,10 @@ public class SettingsManager {
 	
 	public static boolean oldGradesEmpty() {
 		return pastGrades.isEmpty();
+	}
+	
+	public static int getGradesLength() {
+		return pastGrades.size();
 	}
 	
 	public static void loadPhonyPastGrades() {
