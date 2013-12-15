@@ -17,7 +17,7 @@ public class BrotherDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstance) {
 		AlertDialog.Builder bob = new AlertDialog.Builder(getActivity());
 		bob.setTitle("Who am I?");
-		bob.setItems(SettingsManager.formatBrotherNames(), mListener);
+		bob.setItems(SettingsManager.account.toCharSequence(), mListener);
 		return bob.create();
 	}
 	

@@ -21,9 +21,7 @@ public class InfoDialog extends DialogFragment {
 			   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dismiss();
-				}
+				public void onClick(DialogInterface dialog, int which) {}
 			});
 		return builder.create();
 	}

@@ -18,5 +18,10 @@
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_specifics">Specifics</string>
     <string name="switchstudent">Switch Student</string>
+    <string name="title_activity_district_picker">District Picker</string>
+    <string name="largest_grade">105</string>
+    <string name="teacher_name">Donovan, Dawn A</string>
+    <string name="lb_sem1">"Sem. 1: "</string>
+    <string name="lb_sem2">"Sem. 2: "</string>
 
 </resources>

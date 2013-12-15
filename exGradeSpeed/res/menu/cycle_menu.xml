@@ -4,22 +4,25 @@
 
     <item
         android:id="@+id/cycle1"
-        android:orderInCategory="5"
+        android:orderInCategory="4"
         android:title="1st Quarter"/>
     
     <item
         android:id="@+id/cycle2"
-        android:orderInCategory="7"
+        android:orderInCategory="5"
         android:title="2nd Quarter"/>
     
     <item
         android:id="@+id/cycle3"
-        android:orderInCategory="10"
+        android:orderInCategory="8"
         android:title="3rd Quarter"/>
     
     <item
         android:id="@+id/cycle4"
-        android:orderInCategory="12"
+        android:orderInCategory="9"
         android:title="4th Quarter"/>
+    
+    <!-- <item android:id="@+id/note" android:orderInCategory="100" android:title="View Note"></item> -->
+    <item android:id="@+id/email" android:orderInCategory="200" android:title="Email Teacher"></item>
 
 </menu>

@@ -19,13 +19,11 @@ import com.derangementinc.gradespeedmobile.R;
 public class SpecificsExpandableAdapter extends BaseExpandableListAdapter {
 	
 	Context context;
-	ConnectionManager cm;
 	int[]   colors = {Color.rgb(0x00, 0x55, 0xcc), Color.BLACK};
 	int     index  = 0; 
 	
-	public SpecificsExpandableAdapter(Context context, ConnectionManager cm) {
+	public SpecificsExpandableAdapter(Context context) {
 		this.context = context;
-		this.cm = cm;
 	}
 	
 	private int getNextColor() {
@@ -35,7 +33,7 @@ public class SpecificsExpandableAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return cm.LongGrades.get(groupPosition);
+		return ConnectionManager.LongGrades.get(groupPosition);
 	}
 
 	@Override
@@ -45,7 +43,7 @@ public class SpecificsExpandableAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convert, ViewGroup parent) {
-		String[][] table = cm.LongGrades.get(groupPosition);
+		String[][] table = ConnectionManager.LongGrades.get(groupPosition);
 		if (convert == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convert = inflater.inflate(R.layout.expandable_item, null);
@@ -89,12 +87,12 @@ public class SpecificsExpandableAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		return cm.LongGradesHeaders.get(groupPosition);
+		return ConnectionManager.LongGradesHeaders.get(groupPosition);
 	}
 
 	@Override
 	public int getGroupCount() {
-		return cm.LongGradesHeaders.size();
+		return ConnectionManager.LongGradesHeaders.size();
 	}
 
 	@Override
@@ -104,13 +102,14 @@ public class SpecificsExpandableAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convert, ViewGroup parent) {
-		String headerTitle = cm.LongGradesHeaders.get(groupPosition);
+		String headerTitle = ConnectionManager.LongGradesHeaders.get(groupPosition);
+		
 		if (convert == null) {
 			LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convert = inflater.inflate(R.layout.expandable_group, null);
 		}
 		
-		((TextView) convert.findViewById(R.id.lblListHeader)).setText(headerTitle);
+		((TextView) convert.findViewById(R.id.lblListHeader)).setText(StringEscapeUtils.unescapeHtml4(headerTitle));
 		return convert;
 	}
 

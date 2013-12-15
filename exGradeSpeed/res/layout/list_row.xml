@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="7dip"
     android:paddingBottom="7dip" >
 
     <TextView
@@ -11,80 +10,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="5dip"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="5dp"
         android:text="Donovan, Dawn A"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/teacherTitle"
-        android:padding="5dip"
-        android:text="All:" />
-
-    <TextView
-        android:id="@+id/cycle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/textView2"
-        android:text="00" />
-
-    <TextView
-        android:id="@+id/cycle2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cycle1"
-        android:layout_alignBottom="@+id/cycle1"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/cycle1"
-        android:text="00" />
-
-    <TextView
-        android:id="@+id/semester1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cycle2"
-        android:layout_alignBottom="@+id/cycle2"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/cycle2"
-        android:background="@android:color/white"
-        android:text="00"
-        android:textColor="@android:color/black" />
-
-    <TextView
-        android:id="@+id/cycle3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/semester1"
-        android:layout_toRightOf="@+id/semester1"
-        android:layout_marginLeft="20dp"
-        android:text="00" />
-
-    <TextView
-        android:id="@+id/cycle4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cycle3"
-        android:layout_toRightOf="@+id/cycle3"
-        android:layout_marginLeft="20dp"
-        android:text="00" />
-
-    <TextView
-        android:id="@+id/semester2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cycle4"
-        android:layout_toRightOf="@+id/cycle4"
-        android:layout_marginLeft="20dp"
-        android:background="@android:color/white"
-        android:text="00"
-        android:textColor="@android:color/black" />
+        android:textSize="22sp" />
 
     <ImageView
         android:id="@+id/imageView1"
@@ -100,20 +30,131 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/imageView1"
-        android:text="69"
+        android:text="@string/largest_grade"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="34dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30dp" />
+        android:textSize="37sp" />
 
     <TextView
         android:id="@+id/flagNEW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/teacherTitle"
+        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/imageView1"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#FF0000"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
+
+    <TableLayout
+        android:id="@+id/table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/teacherTitle"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="85dp" >
+
+        <TableRow
+            android:id="@+id/row_semester_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/label_sem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:textSize="14sp"
+                android:text="@string/lb_sem1" />
+
+            <TextView
+                android:id="@+id/cycle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textStyle="italic"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/cycle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textStyle="italic"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/exam1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/semester1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/row_semester_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/label_sem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:textSize="14sp"
+                android:text="@string/lb_sem2" />
+
+            <TextView
+                android:id="@+id/cycle3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/cycle4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/exam2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/semester2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/largest_grade"
+                android:layout_weight="0.2"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
 
 </RelativeLayout>
